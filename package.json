@@ -1,0 +1,27 @@
+{
+  "name": "social-scheduler",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "@adiwajshing/baileys": "^3.4.1",
+    "cloudinary": "^1.25.0",
+    "cookie-parser": "~1.4.4",
+    "cryptr": "^6.0.2",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "express-fileupload": "^1.2.1",
+    "fb": "^2.0.0",
+    "instagram-web-api": "^2.2.2",
+    "mongoose": "^5.11.18",
+    "morgan": "~1.9.1",
+    "node-cron": "^2.0.3",
+    "node-fetch": "^2.6.1",
+    "streamifier": "^0.1.1",
+    "timezone-support": "^2.0.2",
+    "twit": "^2.2.11"
+  }
+}
