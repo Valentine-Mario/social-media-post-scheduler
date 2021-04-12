@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 var logger = require("morgan");
 var fileUpload = require("express-fileupload");
 require("dotenv").config();
+var db = require("mongodb");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");

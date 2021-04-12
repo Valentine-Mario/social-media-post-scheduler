@@ -16,7 +16,7 @@
     "express-fileupload": "^1.2.1",
     "fb": "^2.0.0",
     "instagram-web-api": "^2.2.2",
-    "mongoose": "^5.11.18",
+    "mongoose": "^5.11.15",
     "morgan": "~1.9.1",
     "node-cron": "^2.0.3",
     "node-fetch": "^2.6.1",
