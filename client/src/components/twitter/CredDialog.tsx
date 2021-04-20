@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
+import { postData } from "../../lib/api";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const CredDialog = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -15,7 +19,42 @@ const CredDialog = () => {
     access_token_secret,
     set_access_token_secret,
   ] = useState<String | null>(null);
+  const [loading, set_loading] = useState<boolean>(false);
+  const [snackbar_state, set_snackbar_state] = useState({
+    openSnackbar: false,
+    vertical: "top" as "top",
+    horizontal: "center" as "center",
+  });
+  const [snack_message, set_snack_message] = useState<String | null>(null);
+  const { vertical, horizontal, openSnackbar } = snackbar_state;
+  const handleOpenSnackbar = () => () => {
+    set_snackbar_state({
+      openSnackbar: true,
+      vertical: "top",
+      horizontal: "center",
+    });
+  };
 
+  const handleCloseSnackbar = () => {
+    set_snackbar_state({ ...snackbar_state, openSnackbar: false });
+  };
+
+  const submit = () => {
+    set_loading(true);
+    let data = {
+      consumer_key: consumer_key,
+      consumer_secret: consumer_secret,
+      access_token: access_token,
+      access_token_secret: access_token_secret,
+    };
+    postData("/tw/update", data).then((response) => {
+      set_snack_message((response.message as string) || response.err);
+      handleOpenSnackbar();
+      console.log(response);
+      set_loading(false);
+      handleClose();
+    });
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -27,7 +66,7 @@ const CredDialog = () => {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Update Credentials
+        Update Twitter Credentials
       </Button>
       <Dialog
         open={open}
@@ -91,11 +130,18 @@ const CredDialog = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Schedule
+          <Button disabled={loading} onClick={submit} color="primary">
+            {loading ? "Loading..." : "Post"}
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        message={snack_message}
+        key={vertical + horizontal}
+      />
     </div>
   );
 };

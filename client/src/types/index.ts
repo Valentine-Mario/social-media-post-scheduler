@@ -18,3 +18,10 @@ export type twPostProp = {
   posted: boolean;
   schedlue: Date;
 };
+
+export type Response = {
+  success: boolean;
+  message?: string;
+  err?: any;
+  data?: any;
+};
