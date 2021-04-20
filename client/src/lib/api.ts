@@ -40,3 +40,22 @@ export const postData = (url: String, data: object): Promise<Response> => {
       .catch((error) => rej(error));
   });
 };
+
+export const postDataWithFile = (
+  url: String,
+  data: FormData
+): Promise<Response> => {
+  return new Promise((res, rej) => {
+    fetch(endpoint + url, {
+      method: "POST",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        res(result);
+      })
+      .catch((error) => {
+        rej(error);
+      });
+  });
+};
