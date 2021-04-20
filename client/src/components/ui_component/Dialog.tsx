@@ -42,34 +42,43 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
     default:
       path = "/ig/add";
   }
-
-  if (image === null) {
-    set_loading(true);
-    let data = {
-      text: text,
-      schedlue: schedlue,
-    };
-    postData(path, data).then((response) => {
-      set_snack_message((response.message as string) || response.err);
-      handleOpenSnackbar();
-      console.log(response);
-      set_loading(false);
-      handleClose();
-    });
-  } else {
-    set_loading(true);
-    const formData: FormData = new FormData();
-    formData.append("text", text as string);
-    formData.append("schedlue", schedlue as string);
-    formData.append("image", image[0]);
-    postDataWithFile(path, formData).then((response) => {
-      set_snack_message((response.message as string) || response.err);
-      handleOpenSnackbar();
-      console.log(response);
-      set_loading(false);
-      handleClose();
-    });
-  }
+  const submit = () => {
+    if (social_media.toLowerCase() === "instagram" && image === null) {
+      set_snack_message("image must be selected for instagram");
+      return;
+    }
+    if (text === null || schedlue === null) {
+      set_snack_message("please provide text and scheduled date");
+      return;
+    }
+    if (image === null) {
+      set_loading(true);
+      let data = {
+        text: text,
+        schedlue: schedlue,
+      };
+      postData(path, data).then((response) => {
+        set_snack_message((response.message as string) || response.err);
+        handleOpenSnackbar();
+        console.log(response);
+        set_loading(false);
+        handleClose();
+      });
+    } else {
+      set_loading(true);
+      const formData: FormData = new FormData();
+      formData.append("text", text as string);
+      formData.append("schedlue", schedlue as string);
+      formData.append("image", image[0]);
+      postDataWithFile(path, formData).then((response) => {
+        set_snack_message((response.message as string) || response.err);
+        handleOpenSnackbar();
+        console.log(response);
+        set_loading(false);
+        handleClose();
+      });
+    }
+  };
 
   const handleCloseSnackbar = () => {
     set_snackbar_state({ ...snackbar_state, openSnackbar: false });
@@ -143,7 +152,7 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={submit} color="primary">
             {loading ? "Loading..." : "Post"}
           </Button>
         </DialogActions>

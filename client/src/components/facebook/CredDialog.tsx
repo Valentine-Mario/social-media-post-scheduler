@@ -34,6 +34,10 @@ const CredDialog = () => {
   };
 
   const submit = () => {
+    if (token === null) {
+      set_snack_message("please fill all form");
+      return;
+    }
     set_loading(true);
     let data = {
       token: token,

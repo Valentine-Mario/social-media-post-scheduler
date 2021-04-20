@@ -29,6 +29,15 @@ const CredDialog = () => {
   const { vertical, horizontal, openSnackbar } = snackbar_state;
 
   const submit = () => {
+    if (
+      consumer_key === null ||
+      consumer_secret === null ||
+      access_token === null ||
+      access_token_secret === null
+    ) {
+      set_snack_message("please fill all form");
+      return;
+    }
     set_loading(true);
     let data = {
       consumer_key: consumer_key,
