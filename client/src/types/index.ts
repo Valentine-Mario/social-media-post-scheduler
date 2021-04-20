@@ -23,5 +23,5 @@ export type Response = {
   success: boolean;
   message?: string;
   err?: any;
-  data?: any;
+  data?: twPostProp[] | igPostProp[] | fbPostProp[];
 };

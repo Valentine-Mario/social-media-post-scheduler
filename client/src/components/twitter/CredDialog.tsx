@@ -27,17 +27,6 @@ const CredDialog = () => {
   });
   const [snack_message, set_snack_message] = useState<String | null>(null);
   const { vertical, horizontal, openSnackbar } = snackbar_state;
-  const handleOpenSnackbar = () => () => {
-    set_snackbar_state({
-      openSnackbar: true,
-      vertical: "top",
-      horizontal: "center",
-    });
-  };
-
-  const handleCloseSnackbar = () => {
-    set_snackbar_state({ ...snackbar_state, openSnackbar: false });
-  };
 
   const submit = () => {
     set_loading(true);
@@ -55,8 +44,20 @@ const CredDialog = () => {
       handleClose();
     });
   };
+
   const handleClickOpen = () => {
     setOpen(true);
+  };
+  const handleOpenSnackbar = () => () => {
+    set_snackbar_state({
+      openSnackbar: true,
+      vertical: "top",
+      horizontal: "center",
+    });
+  };
+
+  const handleCloseSnackbar = () => {
+    set_snackbar_state({ ...snackbar_state, openSnackbar: false });
   };
 
   const handleClose = () => {

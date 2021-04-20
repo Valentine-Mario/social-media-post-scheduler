@@ -1,7 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormDialog, TabComponent } from "../ui_component";
 import CredDialog from "./CredDialog";
+import { fetchData } from "../../lib/api";
+import { fbPostProp } from "../../types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,6 +15,12 @@ const useStyles = makeStyles(() => ({
 const FacebookHome = () => {
   const classes = useStyles();
 
+  const [fb_post, set_fb_post] = useState<fbPostProp[]>();
+
+  fetchData("/fb/get").then((response) => {
+    set_fb_post(response.data as fbPostProp[]);
+  });
+  console.log(fb_post);
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>

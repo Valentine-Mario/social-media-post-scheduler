@@ -38,7 +38,7 @@ const CredDialog = () => {
     let data = {
       token: token,
     };
-    postData("/ig/update", data).then((response) => {
+    postData("/fb/update", data).then((response) => {
       set_snack_message((response.message as string) || response.err);
       handleOpenSnackbar();
       console.log(response);

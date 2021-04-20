@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormDialog, TabComponent } from "../ui_component";
 import CredDialog from "./CredDialog";
+import { fetchData } from "../../lib/api";
+import { igPostProp } from "../../types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -11,6 +14,12 @@ const useStyles = makeStyles(() => ({
 
 const InstagramHome = () => {
   const classes = useStyles();
+  const [ig_post, set_ig_post] = useState<igPostProp[]>();
+
+  fetchData("/ig/get").then((response) => {
+    set_ig_post(response.data as igPostProp[]);
+  });
+  console.log(ig_post);
 
   return (
     <div className={classes.root}>

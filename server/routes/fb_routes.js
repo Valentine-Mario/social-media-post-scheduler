@@ -6,6 +6,6 @@ router.post("/update", fbController.updateAcc);
 router.post("/add", fbController.AddPost);
 router.post("/update/:id", fbController.updatePost);
 router.get("/delete/:id", fbController.deletePost);
-router.post("/get", fbController.getPost);
+router.get("/get", fbController.getPost);
 
 module.exports = router;

@@ -150,11 +150,8 @@ class fbController {
   }
 
   getPost(req, res) {
-    let data = {
-      posted: req.body.posted,
-    };
     try {
-      fbPostSchema.find({ posted: data.posted }, (err, post) => {
+      fbPostSchema.find({}, (err, post) => {
         if (err) {
           return res.json({
             success: false,
@@ -162,7 +159,11 @@ class fbController {
             err: err,
           });
         } else {
-          return res.json({ success: true, message: post });
+          return res.json({
+            success: true,
+            message: "data gotten successfully",
+            data: post,
+          });
         }
       });
     } catch (e) {

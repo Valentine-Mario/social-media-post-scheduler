@@ -151,11 +151,8 @@ class IgController {
   }
 
   getPost(req, res) {
-    let data = {
-      posted: req.body.posted,
-    };
     try {
-      IgPostModel.find({ posted: data.posted }, (err, post) => {
+      IgPostModel.find({}, (err, post) => {
         if (err) {
           return res.json({
             success: false,
@@ -163,7 +160,11 @@ class IgController {
             err: err,
           });
         } else {
-          return res.json({ success: true, message: post });
+          return res.json({
+            success: true,
+            message: "data gotten successfully",
+            data: post,
+          });
         }
       });
     } catch (e) {

@@ -154,11 +154,8 @@ class TwController {
   }
 
   getPost(req, res) {
-    let data = {
-      posted: req.body.posted,
-    };
     try {
-      twPostSchema.find({ posted: data.posted }, (err, post) => {
+      twPostSchema.find({}, (err, post) => {
         if (err) {
           return res.json({
             success: false,
@@ -166,7 +163,11 @@ class TwController {
             err: err,
           });
         } else {
-          return res.json({ success: true, message: post });
+          return res.json({
+            success: true,
+            message: "data gotten successfully",
+            data: post,
+          });
         }
       });
     } catch (e) {

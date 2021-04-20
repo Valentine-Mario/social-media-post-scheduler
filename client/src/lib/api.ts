@@ -1,7 +1,7 @@
 import { endpoint } from "../constants";
 import { Response } from "../types";
 
-export const fetchData = <T>(path: String): Promise<T> => {
+export const fetchData = (path: String): Promise<Response> => {
   return new Promise((res, rej) => {
     var myHeaders: Headers = new Headers();
     myHeaders.append("Content-Type", "application/json");
