@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,7 +7,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const CredDialog = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [password, set_password] = useState<String | null>(null);
+  const [username, set_username] = useState<String | null>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,9 +36,26 @@ const CredDialog = () => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="username"
+            label="Ig username"
+            onChange={(
+              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+            ) => {
+              set_username(e.target.value);
+            }}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="password"
+            label="Ig password"
+            type="password"
+            onChange={(
+              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+            ) => {
+              set_password(e.target.value);
+            }}
             fullWidth
           />
         </DialogContent>

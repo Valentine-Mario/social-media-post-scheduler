@@ -1,11 +1,14 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Input,
+} from "@material-ui/core";
 
 interface DialogProp {
   title: string;
@@ -14,7 +17,10 @@ interface DialogProp {
 }
 
 const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [text, set_text] = useState<String | null>(null);
+  const [image, set_image] = useState<FileList | null>(null);
+  const [schedlue, set_schedlue] = useState<String | null>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,10 +46,37 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="text"
+            label="Add Text"
+            type="text"
+            onChange={(
+              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+            ) => {
+              set_text(e.target.value);
+            }}
             fullWidth
+          />
+          <Button variant="contained" component="label">
+            Upload Image
+            <input
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                set_image(e?.target?.files);
+              }}
+              type="file"
+              hidden
+            />
+          </Button>
+
+          <TextField
+            id="schedlue"
+            label="Schedule a date"
+            type="datetime-local"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              set_schedlue(e.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
         </DialogContent>
         <DialogActions>
