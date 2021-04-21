@@ -21,6 +21,13 @@ const FacebookHome = () => {
     set_fb_post(response.data as fbPostProp[]);
   });
   console.log(fb_post);
+
+  const pending_post: fbPostProp[] | undefined = fb_post?.filter(
+    (x) => x.posted === false
+  );
+  const sent_post: fbPostProp[] | undefined = fb_post?.filter(
+    (x) => x.posted === true
+  );
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>
@@ -31,7 +38,10 @@ const FacebookHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent pendingPost="pending fb post" sentPost="sent fb post" />
+      <TabComponent
+        pendingPost={pending_post as fbPostProp[]}
+        sentPost={sent_post as fbPostProp[]}
+      />
     </div>
   );
 };

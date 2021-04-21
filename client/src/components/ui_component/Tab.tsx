@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import { fbPostProp, igPostProp, twPostProp } from "../../types";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,8 +43,8 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 interface TabComponentProps {
-  pendingPost: string;
-  sentPost: string;
+  pendingPost: fbPostProp[] | igPostProp | twPostProp[];
+  sentPost: fbPostProp[] | igPostProp | twPostProp[];
 }
 
 const TabComponent = ({ pendingPost, sentPost }: TabComponentProps) => {

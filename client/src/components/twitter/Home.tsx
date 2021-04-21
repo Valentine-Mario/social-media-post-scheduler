@@ -20,6 +20,13 @@ const TwitterHome = () => {
     set_tw_post(response.data as twPostProp[]);
   });
   console.log(tw_post);
+  const pending_post: twPostProp[] | undefined = tw_post?.filter(
+    (x) => x.posted === false
+  );
+  const sent_post: twPostProp[] | undefined = tw_post?.filter(
+    (x) => x.posted === true
+  );
+
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>
@@ -31,8 +38,8 @@ const TwitterHome = () => {
         <CredDialog />
       </div>
       <TabComponent
-        pendingPost={"pending twitter post"}
-        sentPost={"sent twitter post"}
+        pendingPost={pending_post as twPostProp[]}
+        sentPost={sent_post as twPostProp[]}
       />
     </div>
   );

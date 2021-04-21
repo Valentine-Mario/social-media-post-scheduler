@@ -20,7 +20,12 @@ const InstagramHome = () => {
     set_ig_post(response.data as igPostProp[]);
   });
   console.log(ig_post);
-
+  const pending_post: igPostProp[] | undefined = ig_post?.filter(
+    (x) => x.posted === false
+  );
+  const sent_post: igPostProp[] | undefined = ig_post?.filter(
+    (x) => x.posted === true
+  );
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>
@@ -31,7 +36,10 @@ const InstagramHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent pendingPost="pending ig post" sentPost="sent ig post" />
+      <TabComponent
+        pendingPost={pending_post as igPostProp[]}
+        sentPost={sent_post as igPostProp[]}
+      />
     </div>
   );
 };
