@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormDialog, TabComponent } from "../ui_component";
 import CredDialog from "./CredDialog";
 import { fetchData } from "../../lib/api";
-import { igPostProp } from "../../types";
+import { Post } from "../../types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,18 +14,22 @@ const useStyles = makeStyles(() => ({
 
 const InstagramHome = () => {
   const classes = useStyles();
-  const [ig_post, set_ig_post] = useState<igPostProp[]>();
+  const [ig_post, set_ig_post] = useState<Post[] | null>(null);
+  useEffect(() => {
+    fetchData("/ig/get").then((response) => {
+      set_ig_post(response.data!);
+    });
+  }, []);
 
-  fetchData("/ig/get").then((response) => {
-    set_ig_post(response.data as igPostProp[]);
-  });
-  console.log(ig_post);
-  const pending_post: igPostProp[] | undefined = ig_post?.filter(
+  const pending_post: Post[] | undefined = ig_post?.filter(
     (x) => x.posted === false
   );
-  const sent_post: igPostProp[] | undefined = ig_post?.filter(
+  const sent_post: Post[] | undefined = ig_post?.filter(
     (x) => x.posted === true
   );
+  if (pending_post === undefined || sent_post === undefined) {
+    return <></>;
+  }
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>
@@ -36,10 +40,7 @@ const InstagramHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent
-        pendingPost={pending_post as igPostProp[]}
-        sentPost={sent_post as igPostProp[]}
-      />
+      <TabComponent pendingPost={pending_post!} sentPost={sent_post!} />
     </div>
   );
 };

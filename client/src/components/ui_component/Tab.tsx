@@ -1,10 +1,19 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { fbPostProp, igPostProp, twPostProp } from "../../types";
+import { Post } from "../../types";
+import moment from "moment";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Box,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -13,6 +22,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: "30px",
     width: "70%",
     marginLeft: "30px",
+  },
+  root2: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 140,
   },
 }));
 
@@ -43,14 +58,13 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 interface TabComponentProps {
-  pendingPost: fbPostProp[] | igPostProp | twPostProp[];
-  sentPost: fbPostProp[] | igPostProp | twPostProp[];
+  pendingPost: Post[];
+  sentPost: Post[];
 }
 
 const TabComponent = ({ pendingPost, sentPost }: TabComponentProps) => {
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
-
   const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -63,10 +77,76 @@ const TabComponent = ({ pendingPost, sentPost }: TabComponentProps) => {
         </Tabs>
       </div>
       <TabPanel value={value} index={0}>
-        {pendingPost}
+        {pendingPost.map((d) => (
+          <Card key={d.id} className={classes.root2}>
+            <CardActionArea>
+              {d.image ? (
+                <CardMedia
+                  className={classes.media}
+                  image={d.image as string}
+                  title="Contemplative Reptile"
+                />
+              ) : (
+                <CardMedia
+                  className={classes.media}
+                  image="https://res.cloudinary.com/rchain/image/upload/v1602745827/No-Image-Available1.png"
+                  title="Contemplative Reptile"
+                />
+              )}
+
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Schedled for:{" "}
+                  {moment(new Date(d.schedlue)).format("dddd, MMMM YYYY HH:mm")}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {d.text}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary">
+                Deelete
+              </Button>
+            </CardActions>
+          </Card>
+        ))}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {sentPost}
+        {sentPost.map((d) => (
+          <Card key={d.id} className={classes.root2}>
+            <CardActionArea>
+              {d.image ? (
+                <CardMedia
+                  className={classes.media}
+                  image={d.image as string}
+                  title="Contemplative Reptile"
+                />
+              ) : (
+                <CardMedia
+                  className={classes.media}
+                  image="https://res.cloudinary.com/rchain/image/upload/v1602745827/No-Image-Available1.png"
+                  title="Contemplative Reptile"
+                />
+              )}
+
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Schedled for:
+                  {moment(new Date(d.schedlue)).format("dddd, MMMM YYYY HH:mm")}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {d.text}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary">
+                Deelete
+              </Button>
+            </CardActions>
+          </Card>
+        ))}
       </TabPanel>
     </div>
   );

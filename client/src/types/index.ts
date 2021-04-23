@@ -1,18 +1,5 @@
-export type fbPostProp = {
-  image: string | null;
-  text: string;
-  posted: boolean;
-  schedlue: Date;
-};
-
-export type igPostProp = {
-  image: string;
-  text: string;
-  posted: boolean;
-  schedlue: Date;
-};
-
-export type twPostProp = {
+export type Post = {
+  id: string;
   image: string | null;
   text: string;
   posted: boolean;
@@ -23,5 +10,5 @@ export type Response = {
   success: boolean;
   message?: string;
   err?: any;
-  data?: twPostProp[] | igPostProp[] | fbPostProp[];
+  data?: Post[];
 };

@@ -13,7 +13,7 @@ export const fetchData = (path: String): Promise<Response> => {
     fetch(endpoint + path, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        res(result);
+        return res(result);
       })
       .catch((error) => rej(error));
   });

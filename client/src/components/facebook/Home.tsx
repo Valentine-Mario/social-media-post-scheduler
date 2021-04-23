@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormDialog, TabComponent } from "../ui_component";
 import CredDialog from "./CredDialog";
 import { fetchData } from "../../lib/api";
-import { fbPostProp } from "../../types";
+import { Post } from "../../types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -15,19 +15,24 @@ const useStyles = makeStyles(() => ({
 const FacebookHome = () => {
   const classes = useStyles();
 
-  const [fb_post, set_fb_post] = useState<fbPostProp[]>();
+  const [fb_post, set_fb_post] = useState<Post[] | null>(null);
 
-  fetchData("/fb/get").then((response) => {
-    set_fb_post(response.data as fbPostProp[]);
-  });
-  console.log(fb_post);
+  useEffect(() => {
+    fetchData("/fb/get").then((response) => {
+      set_fb_post(response.data!);
+    });
+  }, []);
 
-  const pending_post: fbPostProp[] | undefined = fb_post?.filter(
+  const pending_post: Post[] | undefined = fb_post?.filter(
     (x) => x.posted === false
   );
-  const sent_post: fbPostProp[] | undefined = fb_post?.filter(
+  const sent_post: Post[] | undefined = fb_post?.filter(
     (x) => x.posted === true
   );
+
+  if (pending_post === undefined || sent_post === undefined) {
+    return <></>;
+  }
   return (
     <div className={classes.root}>
       <div style={{ display: "flex" }}>
@@ -38,10 +43,7 @@ const FacebookHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent
-        pendingPost={pending_post as fbPostProp[]}
-        sentPost={sent_post as fbPostProp[]}
-      />
+      <TabComponent pendingPost={pending_post!} sentPost={sent_post!} />
     </div>
   );
 };
