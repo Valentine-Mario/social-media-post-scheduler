@@ -1,5 +1,5 @@
 export type Post = {
-  id: string;
+  _id: string;
   image: string | null;
   text: string;
   posted: boolean;

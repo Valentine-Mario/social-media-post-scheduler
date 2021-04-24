@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { postData, postDataWithFile } from "../../lib/api";
-import Snackbar from "@material-ui/core/Snackbar";
 
 interface DialogProp {
   title: string;
@@ -23,13 +22,6 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
   const [image, set_image] = useState<FileList | null>(null);
   const [schedlue, set_schedlue] = useState<String | null>(null);
   const [loading, set_loading] = useState<boolean>(false);
-  const [snackbar_state, set_snackbar_state] = useState({
-    openSnackbar: false,
-    vertical: "top" as "top",
-    horizontal: "center" as "center",
-  });
-  const [snack_message, set_snack_message] = useState<String | null>(null);
-  const { vertical, horizontal, openSnackbar } = snackbar_state;
 
   let path: string;
   switch (social_media.toLowerCase()) {
@@ -44,11 +36,11 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
   }
   const submit = () => {
     if (social_media.toLowerCase() === "instagram" && image === null) {
-      set_snack_message("image must be selected for instagram");
+      alert("image must be selected for instagram");
       return;
     }
     if (text === null || schedlue === null) {
-      set_snack_message("please provide text and scheduled date");
+      alert("please provide text and scheduled date");
       return;
     }
     if (image === null) {
@@ -58,9 +50,8 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
         schedlue: schedlue,
       };
       postData(path, data).then((response) => {
-        set_snack_message((response.message as string) || response.err);
-        handleOpenSnackbar();
-        console.log(response);
+        if (!response.success)
+          alert((response.message as string) || response.err);
         set_loading(false);
         handleClose();
       });
@@ -71,24 +62,10 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
       formData.append("schedlue", schedlue as string);
       formData.append("image", image[0]);
       postDataWithFile(path, formData).then((response) => {
-        set_snack_message((response.message as string) || response.err);
-        handleOpenSnackbar();
-        console.log(response);
         set_loading(false);
         handleClose();
       });
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    set_snackbar_state({ ...snackbar_state, openSnackbar: false });
-  };
-  const handleOpenSnackbar = () => () => {
-    set_snackbar_state({
-      openSnackbar: true,
-      vertical: "top",
-      horizontal: "center",
-    });
   };
 
   const handleClickOpen = () => {
@@ -125,7 +102,26 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
             }}
             fullWidth
           />
-          <Button variant="contained" component="label">
+
+          <TextField
+            id="schedlue"
+            label="Schedule a date"
+            type="datetime-local"
+            style={{ marginTop: "10px" }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              set_schedlue(e.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
+          <Button
+            style={{ marginTop: "10px" }}
+            variant="contained"
+            color="primary"
+            component="label"
+          >
             Upload Image
             <input
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,35 +131,16 @@ const FormDialog = ({ title, social_media, button_text }: DialogProp) => {
               hidden
             />
           </Button>
-
-          <TextField
-            id="schedlue"
-            label="Schedule a date"
-            type="datetime-local"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              set_schedlue(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={submit} color="primary">
-            {loading ? "Loading..." : "Post"}
+            {loading ? "Uploading..." : "Post"}
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        message={snack_message}
-        key={vertical + horizontal}
-      />
     </div>
   );
 };

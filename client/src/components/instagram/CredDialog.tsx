@@ -8,35 +8,16 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { postData } from "../../lib/api";
-import Snackbar from "@material-ui/core/Snackbar";
 
 const CredDialog = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [password, set_password] = useState<String | null>(null);
   const [username, set_username] = useState<String | null>(null);
   const [loading, set_loading] = useState<boolean>(false);
-  const [snackbar_state, set_snackbar_state] = useState({
-    openSnackbar: false,
-    vertical: "top" as "top",
-    horizontal: "center" as "center",
-  });
-  const [snack_message, set_snack_message] = useState<String | null>(null);
-  const { vertical, horizontal, openSnackbar } = snackbar_state;
-  const handleOpenSnackbar = () => () => {
-    set_snackbar_state({
-      openSnackbar: true,
-      vertical: "top",
-      horizontal: "center",
-    });
-  };
-
-  const handleCloseSnackbar = () => {
-    set_snackbar_state({ ...snackbar_state, openSnackbar: false });
-  };
 
   const submit = () => {
     if (username === null || password === null) {
-      set_snack_message("please fill all form");
+      alert("please fill all form");
       return;
     }
     set_loading(true);
@@ -45,9 +26,8 @@ const CredDialog = () => {
       password: password,
     };
     postData("/ig/update", data).then((response) => {
-      set_snack_message((response.message as string) || response.err);
-      handleOpenSnackbar();
-      console.log(response);
+      if (!response.success)
+        alert((response.message as string) || response.err);
       set_loading(false);
       handleClose();
     });
@@ -110,13 +90,6 @@ const CredDialog = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        message={snack_message}
-        key={vertical + horizontal}
-      />
     </div>
   );
 };

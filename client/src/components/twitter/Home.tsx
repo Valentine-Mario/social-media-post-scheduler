@@ -42,7 +42,11 @@ const TwitterHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent pendingPost={pending_post!} sentPost={sent_post!} />
+      <TabComponent
+        social_media="twitter"
+        pendingPost={pending_post!}
+        sentPost={sent_post!}
+      />
     </div>
   );
 };

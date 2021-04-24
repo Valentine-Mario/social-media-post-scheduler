@@ -40,7 +40,11 @@ const InstagramHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent pendingPost={pending_post!} sentPost={sent_post!} />
+      <TabComponent
+        social_media="instagram"
+        pendingPost={pending_post!}
+        sentPost={sent_post!}
+      />
     </div>
   );
 };

@@ -43,7 +43,11 @@ const FacebookHome = () => {
         />
         <CredDialog />
       </div>
-      <TabComponent pendingPost={pending_post!} sentPost={sent_post!} />
+      <TabComponent
+        social_media="facebook"
+        pendingPost={pending_post!}
+        sentPost={sent_post!}
+      />
     </div>
   );
 };
